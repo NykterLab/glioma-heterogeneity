@@ -148,7 +148,7 @@ ggsave("seurat/L2_norm_neftel_state_annot.pdf", dp, width=5, height=5)
 dp = CellDimPlot(srt=L3_norm, group.by="neftel_state", reduction="umap", palcolor=c("#FDBF6F", "#A6CEE3", "#B2DF8A", "#1F78B4","#33A02C" ,  "#FF7F00"))
 ggsave("seurat/L3_norm_neftel_state_annot.pdf", dp, width=5, height=5)
 
-
+########################
 # Plot genesets
 features = c(sojka_list, mp_list[2:13], richards_list[c(1:6, 64:65, 68:79)], list(developmental_gsc_top=developmental_gsc_top, injury_gsc_top=injury_gsc_top, ncc=ncc))
 
@@ -215,7 +215,7 @@ p = plot_dot_plot(L3_norm, module_names=c(names(fts), "S.Score", "G2M.Score"), m
 ggsave("seurat/L3_norm_fts_dotplot.pdf", p, width=12, height=20)
 
 
-
+#######################
 # Differential expression and gene set enrichment
 L1_norm = RunDEtest(L1_norm, group_by="clusters", assay="RNA", only.pos=F)
 L1_norm = RunGSEA(L1_norm, group_by="clusters", TERM2GENE=hallmark_sets, DE_threshold="TRUE")
@@ -232,3 +232,16 @@ L3_norm = RunGSEA(L3_norm, group_by="clusters", TERM2GENE=hallmark_sets, DE_thre
 g = GSEAPlot(L3_norm, group_by="clusters", plot_type="comparison", db="custom", direction="both")
 ggsave("seurat/L3_norm_gsea_dotplot_clusters.pdf", g, width=10, height=6)
 
+########################
+# Save data for velocity analysis
+write.csv(Cells(L1_norm), file = "velocity/L1_norm_cells.csv", row.names = FALSE)
+write.csv(Embeddings(L1_norm, reduction = "umap"), file = "velocity/L1_norm_embeddings.csv")
+write.csv(L1_norm@meta.data, file="velocity/L1_norm_metadata.csv")
+
+write.csv(Cells(L2_norm), file = "velocity/L2_norm_cells.csv", row.names = FALSE)
+write.csv(Embeddings(L2_norm, reduction = "umap"), file = "velocity/L2_norm_embeddings.csv")
+write.csv(L2_norm@meta.data, file="velocity/L2_norm_metadata.csv")
+
+write.csv(Cells(L3_norm), file = "velocity/L3_norm_cells.csv", row.names = FALSE)
+write.csv(Embeddings(L3_norm, reduction = "umap"), file = "velocity/L3_norm_embeddings.csv")
+write.csv(L3_norm@meta.data, file="velocity/L3_norm_metadata.csv")
